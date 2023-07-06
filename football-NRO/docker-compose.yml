@@ -8,5 +8,5 @@ services:
     environment:
     - MYSQL_ROOT_PASSWORD=admin
     - MYSQL_PASSWORD=admin
-    - MYSQL_USER=adminpo
+    - MYSQL_USER=admin
     - MYSQL_DATABASE=football_db
