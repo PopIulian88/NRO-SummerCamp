@@ -33,7 +33,7 @@ public class Game {
     @JoinColumn(name = "stadium_id")
     private Stadium stadium;
 
-    @OneToOne(cascade = CascadeType.ALL) //Ce e asta?
+    @OneToOne
     @JoinColumn(name = "result_id")
     private Result results_id;
 
