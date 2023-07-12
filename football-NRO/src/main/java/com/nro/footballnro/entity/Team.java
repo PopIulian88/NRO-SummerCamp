@@ -3,8 +3,6 @@ package com.nro.footballnro.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
 @Data
 public class Team {
@@ -31,14 +29,5 @@ public class Team {
 
     @Column
     private int draws;
-
-    @OneToMany(mappedBy = "teamOne")
-    private List<Game> gamesAsTeamOne;
-
-    @OneToMany(mappedBy = "teamTwo")
-    private List<Game> gemesAsTeamTwo;
-
-    @OneToMany(mappedBy = "team")
-    private List<Player> players;
 
 }

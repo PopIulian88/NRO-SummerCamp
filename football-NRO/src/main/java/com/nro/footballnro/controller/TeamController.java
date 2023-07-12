@@ -14,7 +14,7 @@ public class TeamController {
     private TeamService teamService;
 
     @RequestMapping(value = "teams", method = RequestMethod.GET)
-    public List<Team> getTeam(){
+    public List<Team> getTeams(){
         return teamService.getAllTheTeams();
     }
 
@@ -23,12 +23,12 @@ public class TeamController {
         teamService.saveTeam(team);
     }
 
-    @RequestMapping(value = "team/update", method = RequestMethod.PUT)
-    public void updateTeam(@RequestBody Team team){
+    @RequestMapping(value = "teams/update/{id}", method = RequestMethod.PUT)
+    public void updateTeam(@RequestBody Team team, @PathVariable Long id){
         teamService.updateTeam(team);
     }
 
-    @RequestMapping(value = "team/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "teams/delete/{id}", method = RequestMethod.DELETE)
     public void deleteTeam(@PathVariable Long id){
         teamService.deleteTeam(id);
     }
