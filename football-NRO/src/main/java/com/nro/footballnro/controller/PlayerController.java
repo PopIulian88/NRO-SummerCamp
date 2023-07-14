@@ -16,7 +16,7 @@ public class PlayerController {
 
     @Autowired
     private PlayerService playerService;
-//OK
+
     @RequestMapping(value = "players", method = RequestMethod.GET)
     public ResponseEntity<List<Player>> findAllPlayers() {
         List<Player> players = playerService.findAll();
