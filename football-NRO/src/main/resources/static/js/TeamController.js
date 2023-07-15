@@ -77,24 +77,40 @@ async function deleteTeam(teamId){
 }
 
 function editTeamButton(teamId){
-    $('#myEditTeamModal').modal('show');
     document.getElementById("idCurent").value = teamId;
+    //document.getElementById("nameTeam").value = name;
+    // document.getElementById("score").value = score;
+    // document.getElementById("received").value = received;
+    // document.getElementById("victories").value = victories;
+    // document.getElementById("defeats").value = defeats;
+    // document.getElementById("draws").value = draws;
+
+    $('#myEditTeamModal').modal('show');
+
 }
 
 document.getElementById("editChanges").addEventListener("click", function (){
     var id = document.getElementById("idCurent").value;
     var name = document.getElementById("nameTeam").value;
     var score = document.getElementById("score").value;
+    var received = document.getElementById("received").value;
+    var victories = document.getElementById("victories").value;
+    var defeats = document.getElementById("defeats").value;
+    var draws = document.getElementById("draws").value;
 
-    editTeam(id, name, score, 1, 2, 3);
+    editTeam(id, name, score,  received,victories, defeats, draws);
 
     document.getElementById("nameTeam").value = "";
     document.getElementById("score").value = "";
+    document.getElementById("received").value = "";
+    document.getElementById("victories").value = "";
+    document.getElementById("defeats").value = "";
+    document.getElementById("draws").value = "";
     $('#myEditTeamModal').modal('hide');
 
 })
 
-async function editTeam(teamId, name, goalScored, victories, defeats, draws){
+async function editTeam(teamId, name, goalScored, received, victories, defeats, draws){
     const responseJson = await fetch(
         baseURL + "/teams/update/" + teamId,
         {
@@ -106,6 +122,7 @@ async function editTeam(teamId, name, goalScored, victories, defeats, draws){
                 "id": teamId,
                 "name": name,
                 "goalScored": goalScored,
+                "goalsReceived": received,
                 "victories": victories,
                 "defeats": defeats,
                 "draws": draws
@@ -122,6 +139,10 @@ async function editTeam(teamId, name, goalScored, victories, defeats, draws){
 document.getElementById("closeEdit").addEventListener("click", function (){
     document.getElementById("nameTeam").value = "";
     document.getElementById("score").value = "";
+    document.getElementById("received").value = "";
+    document.getElementById("victories").value = "";
+    document.getElementById("defeats").value = "";
+    document.getElementById("draws").value = "";
     $('#myEditTeamModal').modal('hide');
 });
 
