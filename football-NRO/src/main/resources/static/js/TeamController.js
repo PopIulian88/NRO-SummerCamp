@@ -73,3 +73,52 @@ async function deleteTeam(teamId){
         console.log("An error has occurred");
     }
 }
+
+document.getElementById("creare-player").addEventListener("click", function() {
+    $('#myModal').modal('show');
+});
+
+// Adăugarea unui eveniment de ascultare pentru clic pe butonul de salvare
+document.getElementById("saveChanges").addEventListener("click", function() {
+    var name = document.getElementById("name").value;
+
+    saveTeam(name);
+
+    // Aici puteți face ceva cu datele introduse (exemplu: le afișăm în consolă)
+    console.log("Nume: " + name);
+
+    $('#myModal').modal('hide');
+});
+
+document.getElementById("closeChanges").addEventListener("click", function (){
+    document.getElementById("name").value = "";
+    $('#myModal').modal('hide');
+});
+
+async function saveTeam(nume){
+    const responeJson = await fetch(
+        baseURL + "/teams/save",
+        {
+            method: "POST",
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                "name": nume,
+                "goalScored": 0,
+                "goalsReceived": 0,
+                "victories": 0,
+                "defeats": 0,
+                "draws": 0
+            })
+        });
+
+    if(responeJson.ok){
+        console.log("Sa salvet sefule");
+        fetchTeamData();
+    }else{
+        console.log("Nu sa SALVAT cu succes");
+    }
+    document.getElementById("name").value = "";
+
+}
