@@ -52,7 +52,9 @@ function createElementFromAttribute(atribute, parent){
 
 function createButtons(team, parent){
     const myButton = document.createElement("td");
-    myButton.innerHTML = `<button type="button" class="btn btn-danger" onclick="deleteTeam(${team.id})">Delete</button>`
+    myButton.innerHTML = `
+                <button type="button" class="btn btn-danger" onclick="deleteTeam(${team.id})">Delete</button>
+                <button type="button" class="btn btn-dark" onclick=editTeamButton(${team.id})>Edit</button>`
     parent.appendChild(myButton);
 }
 
@@ -74,7 +76,60 @@ async function deleteTeam(teamId){
     }
 }
 
-document.getElementById("creare-player").addEventListener("click", function() {
+function editTeamButton(teamId){
+    $('#myEditTeamModal').modal('show');
+    document.getElementById("idCurent").value = teamId;
+}
+
+document.getElementById("editChanges").addEventListener("click", function (){
+    var id = document.getElementById("idCurent").value;
+    var name = document.getElementById("nameTeam").value;
+    var score = document.getElementById("score").value;
+
+    editTeam(id, name, score, 1, 2, 3);
+
+    document.getElementById("nameTeam").value = "";
+    document.getElementById("score").value = "";
+    $('#myEditTeamModal').modal('hide');
+
+})
+
+async function editTeam(teamId, name, goalScored, victories, defeats, draws){
+    const responseJson = await fetch(
+        baseURL + "/teams/update/" + teamId,
+        {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "id": teamId,
+                "name": name,
+                "goalScored": goalScored,
+                "victories": victories,
+                "defeats": defeats,
+                "draws": draws
+            })
+        });
+    if(responseJson.ok) {
+        console.log("Sa EDITAT");
+        fetchTeamData();
+    }else{
+        console.log("Nu sa editat");
+    }
+}
+
+document.getElementById("closeEdit").addEventListener("click", function (){
+    document.getElementById("nameTeam").value = "";
+    document.getElementById("score").value = "";
+    $('#myEditTeamModal').modal('hide');
+});
+
+
+
+// CREATE TEAM
+
+document.getElementById("creare-team").addEventListener("click", function() {
     $('#myModal').modal('show');
 });
 
@@ -94,6 +149,7 @@ document.getElementById("closeChanges").addEventListener("click", function (){
     document.getElementById("name").value = "";
     $('#myModal').modal('hide');
 });
+
 
 async function saveTeam(nume){
     const responeJson = await fetch(

@@ -18,9 +18,9 @@
 
 <h1>Teams</h1>
 
-<button id="creare-player" class="btn btn-dark">Creare echipa</button>
+<button id="creare-team" class="btn btn-dark">Creare echipa</button>
 
-<!-- Fereastra modală -->
+<!-- Fereastra modală pentru creare Team -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -33,15 +33,47 @@
                         <label for="name">Nume:</label>
                         <input type="text" class="form-control" id="name" placeholder="Introduceți numele">
                     </div>
-<!--                    <div class="form-group">-->
-<!--                        <label for="age">Score:</label>-->
-<!--                        <input type="number" class="form-control" id="age" placeholder="Introduceți score">-->
-<!--                    </div>-->
+                    <!--                    <div class="form-group">-->
+                    <!--                        <label for="age">Score:</label>-->
+                    <!--                        <input type="number" class="form-control" id="age" placeholder="Introduceți score">-->
+                    <!--                    </div>-->
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeChanges">Închide</button>
                 <button type="button" class="btn btn-primary" id="saveChanges">Salvează</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Fereastra modală pentru Editare Team -->
+<div class="modal fade" id="myEditTeamModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myEditTeamModalLabel">Editare echipa</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="idCurent">Id:</label>
+                        <input type="text" class="form-control" id="idCurent" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Nume:</label>
+                        <input type="text" class="form-control" id="nameTeam" placeholder="Introduceți numele">
+                    </div>
+                    <div class="form-group">
+                        <label for="score">Score:</label>
+                        <input type="number" class="form-control" id="score" placeholder="Introduceți score">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEdit">Închide</button>
+                <button type="button" class="btn btn-primary" id="editChanges">Salvează</button>
             </div>
         </div>
     </div>
