@@ -1,0 +1,11 @@
+/*Backgound*/
+.jumbotron {
+    background-image: url('../photo/ecranPlayer_backgound.jpg');
+    background-size: cover;
+    /*background-position: center;*/
+}
+
+body {
+    padding: 10px;
+    background-color: #F5F0BB;
+}

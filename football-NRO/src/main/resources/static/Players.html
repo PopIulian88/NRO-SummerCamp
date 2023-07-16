@@ -10,34 +10,124 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
           crossorigin="anonymous">
     <!--    Pentur CSS-->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/player.css">
 </head>
 
-<body>
+<body class="jumbotron">
 
-<h1>Players</h1>
+<h1 class="text-dark font-weight-bold text-uppercase text-center">Players</h1>
 
-<button id="create_player_button" class="btn btn-dark">Creare Jucator</button>
+<button id="create_player_button" class="btn btn-primary">Creare Jucator</button>
+
+<!-- Fereastra modală pentru creare Team -->
+<div class="modal fade" id="myCreatePlayerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Creare Player</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Nume:</label>
+                        <input type="text" class="form-control" id="name" placeholder="Introduceți numele">
+                    </div>
+                    <div class="form-group">
+                        <label for="goalsScored">Goals scored:</label>
+                        <input type="number" class="form-control" id="goalsScored"
+                               placeholder="Introduceți numar goluri">
+                    </div>
+                    <div class="form-group">
+                        <label for="team-dropDown">Team:</label>
+                        <select name="teamCard" id="team-dropDown" class="form-control">
+
+                        </select>
+                    </div>
+                </form>
+                <div class="form-group">
+                    <label for="roleCard">Role:</label>
+                    <select name="roleCard" id="roleCard" class="form-control">
+                        <option value="DEFENDER">Defender</option>
+                        <option value="FORWARD">Forward</option>
+                        <option value="MIDFIELDER">Midfielder</option>
+                        <option value="GOALKEEPER">Goalkeeper</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeChanges">Închide</button>
+                <button type="button" class="btn btn-primary" id="saveChanges">Salvează</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Fereastra modală pentru Editare Player -->
+<div class="modal fade" id="myEditPlayerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myEditModalLabel">Creare Player</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="idCurent">Id:</label>
+                        <input type="text" class="form-control" id="idCurent" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="nameEdit">Nume:</label>
+                        <input type="text" class="form-control" id="nameEdit" placeholder="Introduceți numele">
+                    </div>
+                    <div class="form-group">
+                        <label for="goalsScoredEdit">Goals scored:</label>
+                        <input type="number" class="form-control" id="goalsScoredEdit"
+                               placeholder="Introduceți numar goluri">
+                    </div>
+                    <div class="form-group">
+                        <label for="team-dropDown-edit">Team:</label>
+                        <select name="teamCard" id="team-dropDown-edit" class="form-control">
+
+                        </select>
+                    </div>
+                </form>
+                <div class="form-group">
+                    <label for="roleCardEdit">Role:</label>
+                    <select name="roleCard" id="roleCardEdit" class="form-control">
+                        <option value="DEFENDER">Defender</option>
+                        <option value="FORWARD">Forward</option>
+                        <option value="MIDFIELDER">Midfielder</option>
+                        <option value="GOALKEEPER">Goalkeeper</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeChangesEdit">Închide</button>
+                <button type="button" class="btn btn-primary" id="saveChangesEdit">Salvează</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--Tabelul de echipe-->
-<table id="players-table" class="table table-striped table-hover">
+<table id="players-table" class="table table-striped table-hover table-dark">
     <thead>
     <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Scored</th>
         <th scope="col">Role</th>
-<!--        <th scope="col">Team</th>-->
+        <th scope="col">Team</th>
+        <th scope="col">Actions</th>
+        <!--        <th scope="col">Team</th>-->
     </tr>
     </thead>
     <tbody>
 
     </tbody>
 </table>
-
-
-
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

@@ -54,7 +54,7 @@ function createButtons(team, parent){
     const myButton = document.createElement("td");
     myButton.innerHTML = `
                 <button type="button" class="btn btn-danger" onclick="deleteTeam(${team.id})">Delete</button>
-                <button type="button" class="btn btn-dark" onclick=editTeamButton(${team.id})>Edit</button>`
+                <button type="button" class="btn btn-light" onclick=editTeamButton(${team.id})>Edit</button>`
     parent.appendChild(myButton);
 }
 
