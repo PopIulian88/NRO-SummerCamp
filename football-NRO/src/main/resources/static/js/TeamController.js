@@ -28,6 +28,8 @@ function createTeamTable() {
     const table = $("#teams-table tbody");
     table.empty();
 
+    teamList.sort(compareTeam);
+
     for(const  team of teamList) {
         const newTeamTr = document.createElement("tr");
 
@@ -41,6 +43,24 @@ function createTeamTable() {
         createButtons(team, newTeamTr);
 
         table.append(newTeamTr);
+    }
+}
+
+function compareTeam(a, b){
+    var scorA = (3 * a.victories) + (1 * a.draws);
+    var scorB = (3 * b.victories) + (1 * b.draws);
+
+    if(scorA < scorB){
+        return 1;
+    }else if(scorA > scorB){
+        return -1;
+    }else{
+        if(a.goalScored < b.goalScored)
+            return 1;
+        else if(a.goalScored > b.goalScored)
+            return -1;
+        else
+            return 0;
     }
 }
 

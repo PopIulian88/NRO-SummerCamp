@@ -1,10 +1,69 @@
 const baseURL = "http://localhost:8090/players";
 
 let playerList = [];
+let teamAllList = [];
 
 $(document).ready(async function(){
-    fetchPlayerData();
+    await fetchPlayerData();
+    await fetchAllTeamData();
+
+    //Ca sa se updateze echipele care exista
+    var dropdown = document.getElementById("team-dropDown");
+
+
+    var optionNull1 = document.createElement("option");
+    optionNull1.text = "Fara echipa";
+    optionNull1.value = null;
+
+    var optionNull2 = document.createElement("option");
+    optionNull2.text = "Fara echipa";
+    optionNull2.value = null;
+
+    dropdown.add(optionNull1);
+
+    for(var currentTeam of teamAllList) {
+        var optionText = currentTeam.name;
+        var option = document.createElement("option");
+
+        option.text = optionText;
+        option.value = currentTeam.id;
+
+        dropdown.add(option);
+    }
+
+
+    var dropdownEdit = document.getElementById("team-dropDown-edit");
+    dropdownEdit.add(optionNull2);
+
+    for(var currentTeam of teamAllList) {
+        var optionText = currentTeam.name;
+        var option = document.createElement("option");
+
+        option.text = optionText;
+        option.value = currentTeam.id;
+
+        dropdownEdit.add(option);
+    }
 })
+
+async function fetchAllTeamData(){
+    const responseJson = await fetch(
+        "http://localhost:8090/teams",
+        {
+            method: "GET",
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        });
+
+    teamAllList = await responseJson.json();
+
+    if(responseJson.ok){
+        console.log("S-au extras echipele");
+    }else{
+        console.log("Echipele nu sa extras bine");
+    }
+}
 
 async function fetchPlayerData(){
     const responseJson = await fetch(
@@ -26,27 +85,9 @@ async function fetchPlayerData(){
     }
 }
 
-//AICI
+
 document.getElementById("create_player_button").addEventListener("click", function (){
     $('#myCreatePlayerModal').modal('show');
-
-//
-    var options = {
-        "Null": null
-    };
-
-// Obținem referința către elementul dropdown din HTML
-    var dropdown = document.getElementById("team-dropDown");
-
-// Parcurgem opțiunile și creăm elementele <option> corespunzătoare
-    for (var optionText in options) {
-        var optionValue = options[optionText];
-        var option = document.createElement("option");
-        option.text = optionText;
-        option.value = optionValue;
-
-        dropdown.add(option);
-    }
 });
 
 document.getElementById("closeChanges").addEventListener("click", function(){
@@ -60,9 +101,9 @@ document.getElementById("saveChanges").addEventListener("click", function (){
     var name = document.getElementById("name").value;
     var goalsScored = document.getElementById("goalsScored").value;
     var role = document.getElementById("roleCard").value;
-    var team = document.getElementById("team-dropDown").value;
+    var teamId = document.getElementById("team-dropDown").value;
 
-    savePlayer(name, goalsScored, role, team);
+    savePlayer(name, goalsScored, role, teamId);
 
     document.getElementById("name").value = "";
     document.getElementById("goalsScored").value = "";
@@ -71,8 +112,17 @@ document.getElementById("saveChanges").addEventListener("click", function (){
 
 })
 
-async function savePlayer(nume, goalsScored, role, team){
-    console.log(team);
+async function savePlayer(nume, goalsScored, role, teamId){
+    //console.log(team);
+
+    var listPosition = 0;
+
+    while(listPosition < teamAllList.length && teamAllList[listPosition].id != teamId){
+        listPosition++;
+    }
+
+    console.log(listPosition);
+
     const responsJson = await fetch(
         baseURL + "/save",
         {
@@ -84,14 +134,14 @@ async function savePlayer(nume, goalsScored, role, team){
                 "name": nume,
                 "goalsScored": goalsScored,
                 "role": role,
-                "team": (team === "null") ? null : {
-                    "id": team.id,
-                    "name": team.name,
-                    "goalScored": team.goalScored,
-                    "goalsReceived": team.goalsReceived,
-                    "victories": team.victories,
-                    "defeats": team.defeats,
-                    "draws": team.draws
+                "team": (teamId === "null") ? null : {
+                    "id": teamId,
+                    "name": teamAllList[listPosition].name,
+                    "goalScored": teamAllList[listPosition].goalScored,
+                    "goalsReceived": teamAllList[listPosition].goalsReceived,
+                    "victories": teamAllList[listPosition].victories,
+                    "defeats": teamAllList[listPosition].defeats,
+                    "draws": teamAllList[listPosition].draws
                 }
             })
         });
@@ -112,6 +162,9 @@ function createPlayerTable(){
     const table = $("#players-table tbody");
     table.empty();
 
+    playerList.sort(compareFn);
+    console.log(playerList);
+
     for(const player of playerList){
         const newPlayerTr = document.createElement("tr");
 
@@ -128,6 +181,15 @@ function createPlayerTable(){
 
         table.append(newPlayerTr);
     }
+}
+
+function compareFn(a, b){
+    if(a.goalsScored > b.goalsScored)
+        return -1;
+    else if(a.goalsScored < b.goalsScored)
+        return 1;
+    else
+        return 0;
 }
 
 function createElementFromAttritute(atribute, parent){
@@ -162,27 +224,8 @@ async function deletePlayer(teamId){
     }
 }
 
-//SI AICI
 function editPlayerButton(playerId){
     document.getElementById("idCurent").value = playerId;
-
-    //
-    var options = {
-        "Null": null
-    };
-
-// Obținem referința către elementul dropdown din HTML
-    var dropdown = document.getElementById("team-dropDown-edit");
-
-// Parcurgem opțiunile și creăm elementele <option> corespunzătoare
-    for (var optionText in options) {
-        var optionValue = options[optionText];
-        var option = document.createElement("option");
-        option.text = optionText;
-        option.value = optionValue;
-
-        dropdown.add(option);
-    }
 
     $('#myEditPlayerModal').modal('show');
 }
@@ -199,10 +242,10 @@ document.getElementById("saveChangesEdit").addEventListener("click", function ()
     var nume = document.getElementById("nameEdit").value;
     var goalScored = document.getElementById("goalsScoredEdit").value;
     var role = document.getElementById("roleCardEdit").value;
-    var team = document.getElementById("team-dropDown-edit").value;
+    var teamId = document.getElementById("team-dropDown-edit").value;
 
 
-    editPlayer(id, nume, goalScored, role, team);
+    editPlayer(id, nume, goalScored, role, teamId);
 
 
     $('#myEditPlayerModal').modal('hide');
@@ -210,7 +253,14 @@ document.getElementById("saveChangesEdit").addEventListener("click", function ()
     document.getElementById("goalsScoredEdit").value = "";
 });
 
-async function editPlayer(id, nume, goalScored, role, team){
+async function editPlayer(id, nume, goalScored, role, teamId){
+
+    var listPosition = 0;
+
+    while(listPosition < teamAllList.length && teamAllList[listPosition].id != teamId){
+        listPosition++;
+    }
+
     const responseJson = await fetch(
         baseURL + "/" + id,
         {
@@ -223,14 +273,14 @@ async function editPlayer(id, nume, goalScored, role, team){
                 "name": nume,
                 "goalsScored": goalScored,
                 "role": role,
-                "team": (team === "null") ? null : {
-                    "id": team.id,
-                    "name": team.name,
-                    "goalScored": team.goalScored,
-                    "goalsReceived": team.goalsReceived,
-                    "victories": team.victories,
-                    "defeats": team.defeats,
-                    "draws": team.draws
+                "team": (teamId === "null") ? null : {
+                    "id": teamId,
+                    "name": teamAllList[listPosition].name,
+                    "goalScored": teamAllList[listPosition].goalScored,
+                    "goalsReceived": teamAllList[listPosition].goalsReceived,
+                    "victories": teamAllList[listPosition].victories,
+                    "defeats": teamAllList[listPosition].defeats,
+                    "draws": teamAllList[listPosition].draws
                 }
             })
         });
